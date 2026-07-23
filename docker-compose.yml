@@ -7,9 +7,9 @@ services:
       - "443:443"
     volumes:
       - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
-      - ./nginx/.htpasswd:/etc/nginx/.htpasswd:ro
       - ./nginx/certs:/etc/nginx/certs:ro
-      - ./www:/usr/share/nginx/html:ro
+    depends_on:
+      - webapp
     restart: unless-stopped
 
   git-server:
