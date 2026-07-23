@@ -1,0 +1,4 @@
+nginx/.htpasswd
+nginx/certs/
+__pycache__/
+*.pyc
