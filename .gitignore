@@ -2,3 +2,6 @@ nginx/.htpasswd
 nginx/certs/
 __pycache__/
 *.pyc
+NVD_API_KEY.txt
+*.jar
+/selenium-tests.yml
