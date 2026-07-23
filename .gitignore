@@ -5,3 +5,5 @@ __pycache__/
 NVD_API_KEY.txt
 *.jar
 /selenium-tests.yml
+node_modules/
+reports/

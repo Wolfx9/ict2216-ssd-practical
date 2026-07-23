@@ -14,3 +14,6 @@ function validateSearchForm() {
   }
   return true;
 }
+
+// Exposed for the inline onsubmit="" handler in home.html
+window.validateSearchForm = validateSearchForm;
