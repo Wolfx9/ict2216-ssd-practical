@@ -1,0 +1,59 @@
+name: Selenium Integration & UI Tests
+on: [push, pull_request]
+jobs:
+  selenium-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Start web app and database
+        run: docker compose up -d --build db webapp
+
+      - name: Start Selenium server
+        run: docker run -d --name selenium --network host --shm-size 2g selenium/standalone-chrome:latest
+
+      - name: Wait for Postgres
+        run: |
+          for i in $(seq 1 30); do
+            docker compose exec -T db pg_isready -U appuser && exit 0
+            sleep 2
+          done
+          exit 1
+
+      - name: Wait for web app
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:5000/ && exit 0
+            sleep 2
+          done
+          exit 1
+
+      - name: Wait for Selenium server
+        run: |
+          for i in $(seq 1 30); do
+            curl -sf http://localhost:4444/wd/hub/status && exit 0
+            sleep 2
+          done
+          exit 1
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install test dependencies
+        run: pip install -r tests/requirements.txt
+
+      - name: Run Selenium integration and UI tests
+        run: python tests/selenium_test.py
+
+      - name: Show app logs on failure
+        if: failure()
+        run: docker compose logs webapp db
+
+      - name: Tear down
+        if: always()
+        run: |
+          docker compose down -v
+          docker rm -f selenium || true
