@@ -1,5 +1,5 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <title>Search</title>
   <script src="{{ url_for('static', filename='validate.js') }}" defer></script>
@@ -8,6 +8,7 @@
   <h1>Search</h1>
   {% if error %}<p style="color:red">{{ error }}</p>{% endif %}
   <form id="search-form" method="post" action="/search" onsubmit="return validateSearchForm()">
+    <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
     <input type="text" id="search_term" name="search_term" minlength="1" maxlength="100" required>
     <button type="submit">Search</button>
   </form>

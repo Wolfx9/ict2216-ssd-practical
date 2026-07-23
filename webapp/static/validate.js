@@ -16,4 +16,4 @@ function validateSearchForm() {
 }
 
 // Exposed for the inline onsubmit="" handler in home.html
-window.validateSearchForm = validateSearchForm;
+globalThis.validateSearchForm = validateSearchForm;

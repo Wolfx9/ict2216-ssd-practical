@@ -4,8 +4,11 @@ from datetime import datetime
 
 import psycopg2
 from flask import Flask, render_template, request
+from flask_wtf import CSRFProtect
 
 app = Flask(__name__)
+app.secret_key = os.environ.get("SECRET_KEY", "dev-secret-key-change-in-production")
+csrf = CSRFProtect(app)
 
 MIN_LENGTH = 1
 MAX_LENGTH = 100
@@ -60,4 +63,4 @@ def search():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host=os.environ.get("FLASK_RUN_HOST", "127.0.0.1"), port=5000)

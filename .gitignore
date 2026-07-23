@@ -7,3 +7,4 @@ NVD_API_KEY.txt
 /selenium-tests.yml
 node_modules/
 reports/
+.sonar/
